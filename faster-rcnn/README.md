@@ -39,19 +39,26 @@ h5py==2.10.0
 ## 训练步骤
 ### 训练VOC07+12数据集
 1. 数据集的准备   
-**本文使用VOC格式进行训练，训练前需要下载好VOC07+12的数据集，解压后放在根目录**  
+  **本文使用VOC格式进行训练，训练前需要下载好VOC07+12的数据集，解压后放在根目录**  
 
 2. 数据集的处理   
-修改voc_annotation.py里面的annotation_mode=2，运行voc_annotation.py生成根目录下的2007_train.txt和2007_val.txt。   
+  修改voc_annotation.py里面的annotation_mode=2，运行voc_annotation.py生成根目录下的2007_train.txt和2007_val.txt。   
 
 3. 开始网络训练   
-train.py的默认参数用于训练VOC数据集，直接运行train.py即可开始训练。   
+
+  1）运行train_voc_pre.py 训练初始化ImageNet预训练模型
+
+  2）运行train_coco_pre.py训练初始化COCO预训练模型
+
+  3）运行train_not_pre.py训练随机初始化模型
+
+  4）运行train_notprefinetune.py训练随机初始化模型(finetune)
 
 4. 训练结果预测   
-训练结果预测需要用到两个文件，分别是frcnn.py和predict.py。我们首先需要去frcnn.py里面修改model_path以及classes_path，这两个参数必须要修改。   
-**model_path指向训练好的权值文件，在logs文件夹里。   
-classes_path指向检测类别所对应的txt。**   
-完成修改后就可以运行predict.py进行检测了。运行后输入图片路径即可检测。   
+  训练结果预测需要用到两个文件，分别是frcnn.py和predict.py。我们首先需要去frcnn.py里面修改model_path以及classes_path，这两个参数必须要修改。   
+  **model_path指向训练好的权值文件，在logs文件夹里。   
+  classes_path指向检测类别所对应的txt。**   
+  完成修改后就可以运行predict.py进行检测了。运行后输入图片路径即可检测。   
 
 ## 预测步骤
 ### a、使用预训练权重
