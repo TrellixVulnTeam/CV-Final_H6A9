@@ -42,5 +42,7 @@ Our models can be download from [here](https://pan.baidu.com/s/1dOw2wQLzM5PogYSl
 
 ## Reference
 [1] [Lite Vision Transformer with Enhanced Self-Attention](https://arxiv.org/abs/2112.10809)
+
 [2] [CrossViT: Cross-Attention Multi-Scale Vision Transformer for Image Classification](https://arxiv.org/abs/2103.14899)
+
 [3] [Visualizer](https://github.com/luo3300612/Visualizer)
