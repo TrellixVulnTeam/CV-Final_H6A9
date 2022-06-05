@@ -76,6 +76,7 @@ python predict.py --input data/Images  --dataset cityscapes --model deeplabv3plu
 </div>
 <p align="center">
 </p>
+
 ### Night
 <div align="center">
   <img src="img/Night1.png">
@@ -97,6 +98,7 @@ python predict.py --input data/Images  --dataset cityscapes --model deeplabv3plu
 </div>
 <p align="center">
 </p>
+
 ### Foggy
 <div align="center">
   <img src="img/Fog1.png">
@@ -118,6 +120,7 @@ python predict.py --input data/Images  --dataset cityscapes --model deeplabv3plu
 </div>
 <p align="center">
 </p>
+
 ## Video Clips Link
 
 Daytime : https://youtube.com/clip/Ugkx4yIgClp66mB29fjTOR2ViGMmFHAZ2XsA
