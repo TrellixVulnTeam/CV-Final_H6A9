@@ -1,136 +1,112 @@
-# Semantic Segmentation
+[![NVIDIA Source Code License](https://img.shields.io/badge/license-NSCL-blue.svg)](https://github.com/NVlabs/SegFormer/blob/master/LICENSE)
+![Python 3.8](https://img.shields.io/badge/python-3.8-green.svg)
 
-## Introduction
-Semantic segmentation is a fundamental task in computer vision and enables many downstream applications. It is related to image classification since it produces per-pixel category prediction instead of image-level prediction. 
+# SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers
 
-This task aims to test and compare several pre-trained semantic segmentation models. We will use two pre-training models to segment three videos in different situations and output semantically segmented video. Our video demo can be found on [here](https://drive.google.com/file/d/1ndLFwr12xZVtzgEEAu859QTt0uyNMtRg/view?usp=sharing).
+<!-- ![image](resources/image.png) -->
+<div align="center">
+  <img src="./resources/image.png" height="400">
+</div>
+<p align="center">
+  Figure 1: Performance of SegFormer-B0 to SegFormer-B5.
+</p>
 
-## Models
+### [Project page](https://github.com/NVlabs/SegFormer) | [Paper](https://arxiv.org/abs/2105.15203) | [Demo (Youtube)](https://www.youtube.com/watch?v=J0MoRQzZe8U) | [Demo (Bilibili)](https://www.bilibili.com/video/BV1MV41147Ko/)
 
-We did not modify anything in the original open source code and tested two models that pretrained on the Cityscapes dataset.
-### [SegFormer(2022)](https://github.com/NVlabs/SegFormer) :
+SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers.<br>
+[Enze Xie](https://xieenze.github.io/), [Wenhai Wang](https://whai362.github.io/), [Zhiding Yu](https://chrisding.github.io/), [Anima Anandkumar](http://tensorlab.cms.caltech.edu/users/anima/), [Jose M. Alvarez](https://rsu.data61.csiro.au/people/jalvarez/), and [Ping Luo](http://luoping.me/).<br>
+NeurIPS 2021.
 
-SegFormer comprises a novel hierarchically structured Transformer encoder which generate high-resolution coarse features and low-resolution fine features. It does not need positional encoding, thereby avoiding the interpolation of positional codes which leads to decreased performance when the testing resolution differs from training. 
+This repository contains the official Pytorch implementation of training & evaluation code and the pretrained models for [SegFormer](https://arxiv.org/abs/2105.15203).
 
-#### Evaluation
+SegFormer is a simple, efficient and powerful semantic segmentation method, as shown in Figure 1.
 
-```CUDA 10.1``` and ```pytorch 1.7.1```
+We use [MMSegmentation v0.13.0](https://github.com/open-mmlab/mmsegmentation/tree/v0.13.0) as the codebase.
 
-Install all requirements list on file ```SegFormer/requirements```.
-Example: evaluate ```SegFormer-B4``` on ```Cityscapes```:
+🔥🔥 SegFormer is on [MMSegmentation](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/segformer). 🔥🔥 
 
-Download ``` segformer.b4.1024x1024.city.160k.pth ```  on  [trained weights](https://drive.google.com/drive/folders/1GAku0G0iR9DsBxCbfENWMJ27c5lYUeQA?usp=sharing) and save in file ``` SegFormer/checkpoints```
 
-```python
-python verification.py
+## Installation
+
+For install and data preparation, please refer to the guidelines in [MMSegmentation v0.13.0](https://github.com/open-mmlab/mmsegmentation/tree/v0.13.0).
+
+Other requirements:
+```pip install timm==0.3.2```
+
+An example (works for me): ```CUDA 10.1``` and  ```pytorch 1.7.1``` 
+
+```
+pip install torchvision==0.8.2
+pip install timm==0.3.2
+pip install mmcv-full==1.2.7
+pip install opencv-python==4.5.1.48
+cd SegFormer && pip install -e . --user
+
+pip install torch==1.7.1 torchvision==0.8.2 -f https://download.pytorch.org/whl/torch_stable.html 
 ```
 
-### [DeepLabv3Plus(2020)](https://github.com/mskmei/DeepLabV3Plus-Pytorch) :
+## Evaluation
 
-DeepLabV3+ extends DeepLabV3 by adding a simple yet effective decoder module to refine the segmentation results especially along object boundaries. 
+Download [trained weights](https://drive.google.com/drive/folders/1GAku0G0iR9DsBxCbfENWMJ27c5lYUeQA?usp=sharing).
 
-1) DeepLab V3+ can arbitrarily control the resolution of extracted encoder features by atrous convolution to trade-off precision and available computation resources.
+Example: evaluate ```SegFormer-B1``` on ```ADE20K```:
 
-2) DeepLab V3+ adapt the Xception model for the segmentation task and apply depthwise separable convolution to both Atrous Spatial Pyramid Pooling and decoder module, resulting in a faster and stronger encoder-decoder network.
+```
+# Single-gpu testing
+python tools/test.py local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py /path/to/checkpoint_file
 
-#### Evaluation
+# Multi-gpu testing
+./tools/dist_test.sh local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py /path/to/checkpoint_file <GPU_NUM>
 
-```CUDA 10.1``` and ```pytorch 1.7.1```
-
-Install all requirements list on ```DeepLabV3Plus/requirements.txt```  
-
-Example: evaluate ```DeepLabV3Plus-MobileNet``` on ```Cityscapes```:
-
-Download ```best_deeplabv3plus_mobilenet_cityscapes_os16.pth``` on [trained weights](https://share.weiyun.com/aSKjdpbL) and save in file ``` DeepLabV3Plus/checkpoints```
-
-```python
-## Single Image
-python predict.py --input data/000001.png  --dataset cityscapes --model deeplabv3plus_mobilenet --ckpt checkpoints/best_deeplabv3plus_mobilenet_cityscapes_os16.pth --save_val_results_to output_results
-
-## Image folder (Use mmcv.VideoReader split video and save in file Images)
-python predict.py --input data/Images  --dataset cityscapes --model deeplabv3plus_mobilenet --ckpt checkpoints/best_deeplabv3plus_mobilenet_cityscapes_os16.pth --save_val_results_to output_results
+# Multi-gpu, multi-scale testing
+tools/dist_test.sh local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py /path/to/checkpoint_file <GPU_NUM> --aug-test
 ```
 
-## Segmentation Results
+## Training
 
-### Daytime
+Download [weights](https://drive.google.com/drive/folders/1b7bwrInTW4VLEm27YawHOAMSMikga2Ia?usp=sharing) pretrained on ImageNet-1K, and put them in a folder ```pretrained/```.
+
+Example: train ```SegFormer-B1``` on ```ADE20K```:
+
+```
+# Single-gpu training
+python tools/train.py local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py 
+
+# Multi-gpu training
+./tools/dist_train.sh local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py <GPU_NUM>
+```
+
+## Visualize
+
+Here is a demo script to test a single image. More details refer to [MMSegmentation's Doc](https://mmsegmentation.readthedocs.io/en/latest/get_started.html).
+
+```shell
+python demo/image_demo.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--device ${DEVICE_NAME}] [--palette-thr ${PALETTE}]
+```
+
+Example: visualize ```SegFormer-B1``` on ```CityScapes```: 
+
+```shell
+python demo/image_demo.py demo/demo.png local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py \
+/path/to/checkpoint_file --device cuda:0 --palette cityscapes
+```
 
 
-<div align="center">
-  <img src="img/Day1.png">
-</div>
-<p align="center">
-</p>
-<div align="center">
-  <img src="img/Day2.png">
-</div>
-<p align="center">
-</p>
-<div align="center">
-  <img src="img/Day3.png">
-</div>
-<p align="center">
-</p>
-<div align="center">
-  <img src="img/Day4.png">
-</div>
-<p align="center">
-</p>
 
-### Night
-<div align="center">
-  <img src="img/Night1.png">
-</div>
-<p align="center">
-</p>
-<div align="center">
-  <img src="img/Night2.png">
-</div>
-<p align="center">
-</p>
-<div align="center">
-  <img src="img/Night3.png">
-</div>
-<p align="center">
-</p>
-<div align="center">
-  <img src="img/Night4.png">
-</div>
-<p align="center">
-</p>
 
-### Foggy
-<div align="center">
-  <img src="img/Fog1.png">
-</div>
-<p align="center">
-</p>
-<div align="center">
-  <img src="img/Fog2.png">
-</div>
-<p align="center">
-</p>
-<div align="center">
-  <img src="img/Fog3.png">
-</div>
-<p align="center">
-</p>
-<div align="center">
-  <img src="img/Fog4.png">
-</div>
-<p align="center">
-</p>
 
-## Video Clips Link
+## License
+Please check the LICENSE file. SegFormer may be used non-commercially, meaning for research or 
+evaluation purposes only. For business inquiries, please contact 
+[researchinquiries@nvidia.com](mailto:researchinquiries@nvidia.com).
 
-Daytime : https://youtube.com/clip/Ugkx4yIgClp66mB29fjTOR2ViGMmFHAZ2XsA
 
-Night : [https://youtube.com/clip/UgkxvKzDpzTZ0JRWKgdrzaEifX0fdmIk6ESi](https://www.youtube.com/watch?v=Cod_ggrs69U&t=3189s)
-
-Foggy : https://youtube.com/clip/UgkxxG9EjFW1wlu0Y3xap7-LNIrREysroFgF
-
-## Reference
-
-[1] [ SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers (arxiv.org)](https://arxiv.org/abs/2105.15203)
-
-[2] [Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation (arxiv.org)](https://arxiv.org/abs/1802.02611)
+## Citation
+```
+@article{xie2021segformer,
+  title={SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers},
+  author={Xie, Enze and Wang, Wenhai and Yu, Zhiding and Anandkumar, Anima and Alvarez, Jose M and Luo, Ping},
+  journal={arXiv preprint arXiv:2105.15203},
+  year={2021}
+}
+```
