@@ -4,7 +4,7 @@ We train LVT, CrossViT, ResNet18 in our project.
 
 We run with pytorch 1.7.1. You should have visualizer installed. See [Link](https://github.com/luo3300612/Visualizer) for details.
 
-Also to download the ImageNet pretrain weight for LVT and CrossViT from [here](). 
+Also to download the ImageNet pretrain weight for LVT and CrossViT from [here](https://pan.baidu.com/s/1dOw2wQLzM5PogYSl6RfhyQ?pwd=r389). 
 
 ### Train Transformer
 
@@ -26,7 +26,7 @@ python train_res.py
 
 `visualize.ipynb` shows the attention map of our model. 
 
-Our models can be download from [here]().
+Our models can be download from [here](https://pan.baidu.com/s/1dOw2wQLzM5PogYSl6RfhyQ?pwd=r389).
 
 ### Results
 
