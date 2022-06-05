@@ -13,30 +13,28 @@
 
 
 ## 性能情况
-| 训练数据集 | 权值文件名称 | 测试数据集 | mAP 0.5 |
-| :-----: | :-----: | :------: | :-----: |
-| VOC07+12 | best_epoch_weights_resnet.pth | VOC-Test07 | 78.67 |
-| VOC07+12 | best_epoch_weights_vgg.pth | VOC-Test07 | 79.41 |
+| 训练数据集 | 实验                     | finetune | 权值文件名称                           | 测试数据集 | mAP 0.5 |
+| :--------: | ------------------------ | -------- | -------------------------------------- | ---------- | :-----: |
+|  VOC07+12  | ImageNet预训练模型       | $\surd$  | best_epoch_weights_ImageNet.pth        | VOC-Test07 |  68.7   |
+|  VOC07+12  | COCO预训练Mask-R-CNN模型 | $\surd$  | best_epoch_weights_COCO.pth            | VOC-Test07 |  12.87  |
+|  VOC07+12  | 随机初始化               |          | best_epoch_weights_random.pth          | VOC-Test07 |  35.75  |
+|  VOC07+12  | 随机初始化               | $\surd$  | best_epoch_weights_random_finetune.pth | VOC-Test07 |  4.10   |
 
 ## 所需环境
-torch == 1.2.0
+scipy==1.2.1
+numpy==1.17.0
+matplotlib==3.1.2
+opencv_python==4.1.2.30
+torch==1.6.0
+torchvision==0.10.0
+tqdm==4.60.0
+Pillow==8.2.0
+h5py==2.10.0
 
 ## 文件下载
 我们小组训练的模型可以在下面的链接下载
 
-链接：https://pan.baidu.com/s/1E__c41UAsqllSkNNmT_TfQ?pwd=a2s6
-
-原仓库：
-
-训练所需的voc_weights_resnet.pth或者voc_weights_vgg.pth以及主干的网络权重可以在百度云下载。  
-voc_weights_resnet.pth是resnet为主干特征提取网络用到的；  
-voc_weights_vgg.pth是vgg为主干特征提取网络用到的；   
-链接: https://pan.baidu.com/s/1S6wG8sEXBeoSec95NZxmlQ      
-提取码: 8mgp    
-
-VOC数据集下载地址如下，里面已经包括了训练集、测试集、验证集（与测试集一样），无需再次划分：  
-链接: https://pan.baidu.com/s/1YuBbBKxm2FGgTU5OfaeC5A    
-提取码: uack   
+链接： https://pan.baidu.com/s/1LGlLeP3j9Ve31adkpTYiUg?pwd=bnqs 提取码: bnqs 
 
 ## 训练步骤
 ### 训练VOC07+12数据集
